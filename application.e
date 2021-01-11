@@ -32,9 +32,8 @@ feature {NONE} -- Initialization
 				if not linea_leida.is_empty then
 					linea_leida_separada := linea_leida.split (' ')
 					comando := linea_leida_separada[1]
-					print(linea_leida_separada)
 					if comando.is_equal ("load") then
-						file_manager.load_csv_as_json(linea_leida_separada[2])
+						file_manager.load_csv_as_json(linea_leida_separada[3])
 					end
 					if comando.is_equal ("save") then
 						print("save comando")

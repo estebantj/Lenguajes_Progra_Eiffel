@@ -12,7 +12,12 @@ feature
 	    local
 	    	archivo: PLAIN_TEXT_FILE
 	    	linea: STRING
+	    	linea_separada: LIST[STRING]
 	    	i: INTEGER
+	    	j: INTEGER
+	    	json: JSON_OBJECT
+	    	nombre_atributos: LIST[STRING]
+	    	tipo_datos: LIST[STRING]
 	    do
 	    	create archivo.make (nombre_archivo)
 	        if not archivo.exists then
@@ -23,8 +28,18 @@ feature
 				else
 					archivo.open_read
 					archivo.read_line
+					-- Se guarda el nombre de cada atributo para su uso posterior
 					linea := archivo.last_string.twin
-					print("Primera linea: "+linea+"%N")
+					print("Atributos: "+linea+"%N")
+					nombre_atributos := linea.split (';')
+
+					archivo.read_line
+					-- Se guarda el tipo de datos de cada atributo
+					linea := archivo.last_string.twin
+					print("Tipo de datos : "+linea+"%N")
+					tipo_datos := linea.split (';')
+
+					-- Este ciclo se repite hasta que se no se puedan leer mas lineas del archvo
 					from
 						i := 0
 					until
@@ -33,7 +48,16 @@ feature
 						archivo.read_line
 						if not archivo.last_string.is_empty then
 							linea := archivo.last_string.twin
-							print(linea+"%N")
+							linea_separada := linea.split (';')
+							from
+								j:=1
+							until
+								j:=linea_separada.count
+							loop
+								
+								j := j+1
+							end
+
 							i := i - 1
 						else
 							i := 1
