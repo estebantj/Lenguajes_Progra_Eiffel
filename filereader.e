@@ -15,9 +15,12 @@ feature
 	    	linea_separada: LIST[STRING]
 	    	i: INTEGER
 	    	j: INTEGER
+	    	contenerdor: JSON_CONTAINER
 	    	json: JSON_OBJECT
 	    	nombre_atributos: LIST[STRING]
 	    	tipo_datos: LIST[STRING]
+	    	tipo: STRING
+	    	nombre: STRING
 	    do
 	    	create archivo.make (nombre_archivo)
 	        if not archivo.exists then
@@ -39,7 +42,7 @@ feature
 					print("Tipo de datos : "+linea+"%N")
 					tipo_datos := linea.split (';')
 
-					-- Este ciclo se repite hasta que se no se puedan leer mas lineas del archvo
+					-- Este ciclo se repite hasta que se no se puedan leer mas lineas del archvo ##################
 					from
 						i := 0
 					until
@@ -49,15 +52,36 @@ feature
 						if not archivo.last_string.is_empty then
 							linea := archivo.last_string.twin
 							linea_separada := linea.split (';')
+							create json.make_empty
+							-- Este ciclo es para recorrer cada element de la linea ########################
 							from
 								j:=1
 							until
-								j:=linea_separada.count
+								j = linea_separada.count
 							loop
-								
+								--print(nombre_atributos[j] + " " + tipo_datos[j] + " " + linea_separada[j] + "%N")
+								tipo := tipo_datos[j]
+								nombre := nombre_atributos[j]
+								inspect
+									tipo.at (1)
+								when 'X' then
+									json.put_string (linea_separada[j], nombre)
+								when '9' then
+									json.put_real (linea_separada[j].to_real, nombre)
+								when 'B' then
+									inspect
+										linea_separada[j].at (1)
+									when 'T','S' then
+										json.put_boolean (True, nombre)
+									when 'F','N' then
+										json.put_boolean (False, nombre)
+									end
+								end
+
 								j := j+1
 							end
-
+							print(json.representation)
+							Io.new_line
 							i := i - 1
 						else
 							i := 1
