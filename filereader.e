@@ -5,7 +5,7 @@ note
 	revision: "$Revision$"
 
 class
-	FILEREADER
+	FILE_READER_WRITER
 
 feature
 	load_csv_as_json (nombre_archivo: STRING): JSON_CONTAINER
@@ -36,14 +36,14 @@ feature
 						-- Se guarda el nombre de cada atributo para su uso posterior
 					linea := archivo.last_string.twin
 					contenedor.set_atributos (linea)
-					--print ("Atributos: " + linea + "%N")
+						--print ("Atributos: " + linea + "%N")
 					nombre_atributos := linea.split (';')
 
 					archivo.read_line
-					-- Se guarda el tipo de datos de cada atributo
+						-- Se guarda el tipo de datos de cada atributo
 					linea := archivo.last_string.twin
 					contenedor.set_datos (linea)
-					--print ("Tipo de datos : " + linea + "%N")
+						--print ("Tipo de datos : " + linea + "%N")
 					tipo_datos := linea.split (';')
 
 						-- Este ciclo se repite hasta que se no se puedan leer mas lineas del archvo ##################
@@ -61,7 +61,7 @@ feature
 							from
 								j := 1
 							until
-								j = linea_separada.count
+								j > linea_separada.count
 							loop
 									--print(nombre_atributos[j] + " " + tipo_datos[j] + " " + linea_separada[j] + "%N")
 								tipo := tipo_datos [j]
@@ -70,7 +70,7 @@ feature
 									tipo.at (1)
 								when 'X' then
 									json.put_string (linea_separada [j], nombre)
-								when '9' then
+								when '9', 'N' then
 									json.put_real (linea_separada [j].to_real, nombre)
 								when 'B' then
 									inspect
@@ -99,7 +99,7 @@ feature
 		end
 
 feature
-	save_json_to_file (nombre_archivo: STRING; contenedor:JSON_CONTAINER)
+	save_json_to_file (nombre_archivo: STRING; contenedor: JSON_CONTAINER)
 		local
 			archivo: PLAIN_TEXT_FILE
 			texto: STRING
@@ -110,7 +110,25 @@ feature
 				if archivo.is_writable then
 					archivo.put_string (texto)
 					archivo.close
-					print("Archivo escrito con exito%N")
+					print ("Archivo escrito con exito%N")
+				else
+					print ("ERROR: no se pudo escribir en el archivo%N")
+				end
+			end
+		end
+
+	save_json_csv (nombre_archivo: STRING; contenedor: JSON_CONTAINER)
+		local
+			archivo: PLAIN_TEXT_FILE
+			texto: STRING
+		do
+			texto := contenedor.create_csv_string
+			if not texto.is_empty then
+				create archivo.make_create_read_write (nombre_archivo)
+				if archivo.is_writable then
+					archivo.put_string (texto)
+					archivo.close
+					print ("Archivo escrito con exito%N")
 				else
 					print ("ERROR: no se pudo escribir en el archivo%N")
 				end
