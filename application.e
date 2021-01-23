@@ -64,15 +64,30 @@ feature {NONE} -- Initialization
 			contenedor: JSON_CONTAINER
 			nuevo_contenedor: JSON_CONTAINER
 			nueva_lista: LINKED_LIST[STRING]
+			atributo_valor: STRING
+			lista_atributo_valor: LINKED_LIST[STRING]
+			atributo: STRING
+			valor: STRING
 		do
 			create nueva_lista.make_from_iterable (linea_leida_separada)
+			atributo_valor := ""
 			nueva_lista.remove_i_th (1)
 			nueva_lista.remove_i_th (1)
 			nueva_lista.remove_i_th (1)
+			across nueva_lista as it loop
+				atributo_valor.append (it.item+" ")
+			end
+			create lista_atributo_valor.make_from_iterable (atributo_valor.split ('='))
+			atributo := lista_atributo_valor.first
+			valor := lista_atributo_valor.last
+			atributo.right_adjust
+			atributo.left_adjust
+			valor.right_adjust
+			valor.left_adjust
 			if archivos_cargados.has (linea_leida_separada[2]) then
 				contenedor := archivos_cargados.at (linea_leida_separada[2])
 				if contenedor /= void then
-					nuevo_contenedor := contenedor.select_option (nueva_lista)
+					nuevo_contenedor := contenedor.select_option (atributo, valor)
 					archivos_cargados.put (nuevo_contenedor, linea_leida_separada[3])
 				end
 			else

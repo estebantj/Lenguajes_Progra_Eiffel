@@ -41,6 +41,8 @@ feature
 	print_jsons
 		do
 			print ("Imprimiendo todos los archivos json%N")
+			print ("Atributos: "+nombre_atributos+"%N")
+			print ("Tipo datos: "+tipo_datos+"%N")
 			across lista_jsons.new_cursor.reversed as json loop
 				print (json.item.representation)
 				Io.new_line
@@ -95,8 +97,33 @@ feature
 		local
 			nuevo_contenedor: JSON_CONTAINER
 			nuevo_json: JSON_OBJECT
+			lista_atributos: LIST[STRING]
+			lista_tipo_datos: LIST[STRING]
+			index: INTEGER
+			nuevos_atributos: STRING
+			nuevos_tipos: STRING
 		do
 			create nuevo_contenedor.make
+			lista_atributos := nombre_atributos.split (';')
+			lista_tipo_datos := tipo_datos.split (';')
+			nuevos_atributos := ""
+			nuevos_tipos := ""
+			print(lista_atributos[1]+pAtributos[1]+",")
+			across pAtributos as atributo loop
+				index := lista_atributos.index_of (atributo.item,1)
+				if index /= 0 then
+					nuevos_atributos.append (atributo.item+";")
+					nuevos_tipos.append (lista_tipo_datos[index]+";")
+				else
+					print("NO ENCONTRADO")
+				end
+			end
+
+			nuevos_atributos.prune_all_trailing (';')
+			nuevos_tipos.prune_all_trailing (';')
+			nuevo_contenedor.set_atributos (nuevos_atributos)
+			nuevo_contenedor.set_datos (nuevos_tipos)
+
 			across lista_jsons.new_cursor.reversed as json loop
 				create nuevo_json.make_empty
 				across pAtributos as atributo loop
@@ -111,17 +138,17 @@ feature
 			result := nuevo_contenedor
 		end
 
-	select_option(pAtributo_valor: LINKED_LIST[STRING]): JSON_CONTAINER
+	select_option(atributo: STRING; valor:STRING): JSON_CONTAINER
 		local
 			nuevo_contenedor: JSON_CONTAINER
-			atributo: STRING
-			valor: STRING
+			nuevo_json: JSON_OBJECT
 			valor_aux: STRING
 			json_aux: JSON_VALUE
 		do
 			create nuevo_contenedor.make
-			atributo := pAtributo_valor.first
-			valor := pAtributo_valor.last
+			nuevo_contenedor.set_atributos (nombre_atributos)
+			nuevo_contenedor.set_datos (tipo_datos)
+			create nuevo_json.make_empty
 			across lista_jsons.new_cursor.reversed as json loop
 				if json.item.has_key (atributo) then
 					json_aux := json.item.item (atributo)
