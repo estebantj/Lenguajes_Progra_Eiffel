@@ -93,29 +93,54 @@ feature
 			result := representacion
 		end
 
+	index_of(lista:LINKED_LIST[ANY];item:ANY):INTEGER
+		local
+			index: INTEGER
+			index_aux: INTEGER
+		do
+			index := 0
+			from
+				index_aux := 1
+			until
+				index_aux > lista.count
+			loop
+				if lista[index_aux].is_equal (item) then
+					index := index_aux
+					index_aux := lista.count
+				end
+				index_aux := index_aux + 1
+			end
+			result := index
+		end
+
 	project(pAtributos: LINKED_LIST[STRING]): JSON_CONTAINER
 		local
 			nuevo_contenedor: JSON_CONTAINER
 			nuevo_json: JSON_OBJECT
-			lista_atributos: LIST[STRING]
-			lista_tipo_datos: LIST[STRING]
+			lista_atributos: LINKED_LIST[STRING]
+			lista_tipo_datos: LINKED_LIST[STRING]
 			index: INTEGER
 			nuevos_atributos: STRING
 			nuevos_tipos: STRING
 		do
 			create nuevo_contenedor.make
-			lista_atributos := nombre_atributos.split (';')
-			lista_tipo_datos := tipo_datos.split (';')
+			create lista_atributos.make_from_iterable (nombre_atributos.split (';'))
+			create lista_tipo_datos.make_from_iterable (tipo_datos.split (';'))
 			nuevos_atributos := ""
 			nuevos_tipos := ""
-			print(lista_atributos[1]+pAtributos[1]+",")
+			--print("-"+lista_atributos[2]+"-"+"-"+pAtributos[2]+"-%N")
+			--if lista_atributos[2].is_equal (pAtributos[2]) then
+			--	print("SON IGUALES%N")
+			--else
+			--	print("NO SON IGUALES%N")
+			--end
 			across pAtributos as atributo loop
-				index := lista_atributos.index_of (atributo.item,1)
+				index := index_of(lista_atributos,atributo.item)
 				if index /= 0 then
 					nuevos_atributos.append (atributo.item+";")
 					nuevos_tipos.append (lista_tipo_datos[index]+";")
 				else
-					print("NO ENCONTRADO")
+					print("Atributo "+atributo.item+" no encontrado%N")
 				end
 			end
 

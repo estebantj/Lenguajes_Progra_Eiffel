@@ -1,0 +1,78 @@
+
+prograeiffel: system execution failed.
+Following is the set of recorded exceptions:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+ARRAYED_LIST        i_th @2                valid_index:                 
+<0000000004149A18>                         Precondition violated.        Fail
+-------------------------------------------------------------------------------
+JSON_CONTAINER      project @16                                         
+<00000000041442C8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+APPLICATION         project_option @8                                   
+<00000000041435A8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+APPLICATION         make @24                                            
+<00000000041435A8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+APPLICATION         root's creation                                     
+<00000000041435A8>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+prograeiffel: system execution failed.
+Following is the set of recorded exceptions:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+ARRAYED_LIST        item @3                index_is_valid:              
+<0000000004116408>                         Precondition violated.        Fail
+-------------------------------------------------------------------------------
+JSON_CONTAINER      project @13                                         
+<00000000041112C8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+APPLICATION         project_option @8                                   
+<00000000041105A8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+APPLICATION         make @24                                            
+<00000000041105A8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+APPLICATION         root's creation                                     
+<00000000041105A8>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+prograeiffel: system execution failed.
+Following is the set of recorded exceptions:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+LINKED_LIST         item @2                not_off:                     
+<000000000410F408>                         Precondition violated.        Fail
+-------------------------------------------------------------------------------
+JSON_CONTAINER      project @9                                          
+<000000000410A2C8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+APPLICATION         project_option @8                                   
+<00000000041095A8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+APPLICATION         make @24                                            
+<00000000041095A8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+APPLICATION         root's creation                                     
+<00000000041095A8>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+
+prograeiffel: PANIC: caught signal #21 (Ctrl-Break) -- Giving up...
